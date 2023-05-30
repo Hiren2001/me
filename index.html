@@ -10,51 +10,54 @@
     }
     
     .weather-card {
-      max-width: 300px;
-      margin: 0 auto;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    
-    .weather-icon {
-      font-size: 48px;
-    }
-    
-    .weather-details {
-      margin-top: 20px;
-    }
-    @media (max-width: 576px) {
-      .weather-card {
-        max-width: 100%;
-        padding: 10px;
-      }
-      
-      .weather-icon {
-        font-size: 36px;
-      }
-      
-      .weather-details {
-        margin-top: 10px;
-      }
-    }
+  max-width: 300px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.weather-icon {
+  font-size: 48px;
+}
+
+.weather-details {
+  margin-top: 20px;
+}
+
+@media (max-width: 576px) {
+  .weather-card {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .weather-icon {
+    font-size: 36px;
+  }
+
+  .weather-details {
+    margin-top: 10px;
+  }
+}
+
 
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="weather-card">
-      <h2 class="text-center">Geo Weather App</h2>
-      <form id="weather-form">
-        <div class="form-group">
-          <input type="text" class="form-control" id="location-input" placeholder="Enter location">
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Get Weather</button>
-      </form>
-      <div id="weather-details" class="weather-details"></div>
-    </div>
+  <div class="weather-card">
+    <h2 class="text-center">Geo Weather App</h2>
+    <form id="weather-form">
+      <div class="form-group">
+        <input type="text" class="form-control" id="location-input" placeholder="Enter location">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Get Weather</button>
+    </form>
+    <div id="weather-details" class="text-center"></div>
   </div>
+</div>
+
   <div class="container">
     <div class="article-content">
       <h1 class="text-center">Geo Weather App: A JavaScript-Powered Weather Tool</h1>
