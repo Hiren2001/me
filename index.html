@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Geo Weather App</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      padding-top: 50px;
+    }
+    
+    .weather-card {
+      max-width: 300px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .weather-icon {
+      font-size: 48px;
+    }
+    
+    .weather-details {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="weather-card">
+      <h2 class="text-center">Geo Weather App</h2>
+      <form id="weather-form">
+        <div class="form-group">
+          <input type="text" class="form-control" id="location-input" placeholder="Enter location">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Get Weather</button>
+      </form>
+      <div id="weather-details" class="weather-details"></div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="article-content">
+      <h1 class="text-center">Geo Weather App: A JavaScript-Powered Weather Tool</h1>
+      <p>The Geo Weather App is a powerful tool that provides users with real-time weather information for any location around the world. Built with JavaScript, this web application offers a seamless and user-friendly experience on both mobile and desktop devices. By leveraging weather data from the WeatherAPI service, users can easily access accurate and up-to-date weather information.</p>
+
+      <h2>How it Works</h2>
+      <p>The Geo Weather App utilizes JavaScript to handle user interactions, retrieve weather data, and dynamically update the user interface. The application incorporates several key functionalities to enhance the user experience.</p>
+
+      <h3>1. Location-Based Weather Data</h3>
+      <p>The app allows users to enter a specific location to retrieve weather data for that area. Users can simply enter a city name or provide more specific details such as city and country. The app then fetches the weather data using the WeatherAPI service and displays it in a clear and concise manner.</p>
+
+      <h3>2. Geolocation Integration</h3>
+      <p>To make the weather retrieval process even more seamless, the Geo Weather App leverages the browser's geolocation feature. When the app is accessed on a device with geolocation capabilities, it automatically detects the user's current location and retrieves the weather data for that location. This feature eliminates the need for manual input, providing instant weather information based on the user's whereabouts.</p>
+
+      <h3>3. Responsive Design</h3>
+      <p>The app is designed to be responsive, ensuring a consistent and optimal user experience across various screen sizes and devices. Whether users access the app on a desktop computer, laptop, tablet, or mobile phone, they can enjoy a visually appealing and user-friendly interface.</p>
+
+      <h2>API Integration</h2>
+      <p>To retrieve weather data, the Geo Weather App integrates with the WeatherAPI service. WeatherAPI provides a reliable and comprehensive collection of weather data, including temperature, humidity, wind speed, and condition descriptions. The app securely communicates with the WeatherAPI service by using an API key, ensuring the privacy and security of user data.</p>
+
+      <h2>Code Breakdown</h2>
+      <p>Let's take a closer look at the JavaScript code that powers the Geo Weather App. The code is structured to handle form submissions, fetch weather data from the API, and update the user interface accordingly.</p>
+
+      <pre><code>&lt;script&gt;
+// JavaScript code
+
+// Function to fetch weather data and update the UI
+function fetchWeatherData(location) {
+  // API key for accessing the WeatherAPI service
+  var apiKey = 'YOUR_API_KEY';
+
+  // API endpoint for retrieving weather data based on location
+  var apiUrl = 'https://api.weatherapi.com/v1/current.json?key=' + apiKey + '&q=' + location;
+
+  // Fetch weather data using the API
+  $.get(apiUrl, function(data) {
+    // Extract relevant weather information from the API response
+    var weatherDetails = `
+      &lt;h3 class="text-center"&gt;${data.location.name}, ${data.location.country}&lt;/h3&gt;
+      &lt;div class="text-center weather-icon"&gt;
+        &lt;img src="${data.current.condition.icon}" alt="${data.current.condition.text}"&gt;
+      &lt;/div&gt;
+      &lt;div class="text-center"&gt;${data.current.condition.text}&lt;/div&gt;
+      &lt;div class="text-center"&gt;${data.current.temp_c} &#8451;&lt;/div&gt;
+      &lt;div class="text-center"&gt;Humidity: ${data.current.humidity}%&lt;/div&gt;
+      &lt;div class="text-center"&gt;Wind: ${data.current.wind_kph} km/h&lt;/div&gt;
+    `;
+
+    // Update the weather details section in the UI
+    $('#weather-details').html(weatherDetails);
+  }).fail(function() {
+    // Display an error message if weather data retrieval fails
+    $('#weather-details').html('&lt;div class="text-center"&gt;Error retrieving weather data.&lt;/div&gt;');
+  });
+}
+
+// Handle form submission
+$('#weather-form').submit(function(event) {
+  event.preventDefault();
+  var location = $('#location-input').val();
+  fetchWeatherData(location);
+});
+
+// Geolocation integration
+function getWeatherByGeolocation() {
+  // Check if browser supports geolocation
+  if (navigator.geolocation) {
+    // Retrieve the user's current position
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        // Extract latitude and longitude from the position data
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+
+        // Build the API endpoint for geolocation-based weather data retrieval
+        var apiUrl = `https://api.weatherapi.com/v1/current.json?key=YOUR_API_KEY&q=${latitude},${longitude}`;
+
+        // Fetch weather data using the API
+        $.get(apiUrl, function(data) {
+          // Extract the current location from the API response
+          var currentLocation = `${data.location.name}, ${data.location.country}`;
+
+          // Update the location input field in the UI
+          $('#location-input').val(currentLocation);
+
+          // Fetch weather data for the current location
+          fetchWeatherData(currentLocation);
+        }).fail(function() {
+          // Display an error message if weather data retrieval fails
+          $('#weather-details').html('&lt;div class="text-center"&gt;Error retrieving weather data.&lt;/div&gt;');
+        });
+      },
+      function(error) {
+        // Fallback to IP geolocation if user denies permission or browser geolocation is not available
+        if (error.code === error.PERMISSION_DENIED) {
+          getWeatherByIPGeolocation();
+        }
+      }
+    );
+  } else {
+    // Fallback to IP geolocation if browser geolocation is not supported
+    getWeatherByIPGeolocation();
+  }
+}
+
+// Get weather by IP geolocation
+function getWeatherByIPGeolocation() {
+  // API endpoint for retrieving geolocation-based weather data
+  var ipApiUrl = 'https://ipapi.co/json/';
+
+  // Fetch geolocation data using the API
+  $.get(ipApiUrl, function(data) {
+    // Extract the location from the API response
+    var location = data.city + ', ' + data.country_name;
+
+    // Update the location input field in the UI
+    $('#location-input').val(location);
+
+    // Fetch weather data for the retrieved location
+    fetchWeatherData(location);
+  }).fail(function() {
+    // Display an error message if geolocation data retrieval fails
+    $('#weather-details').html('&lt;div class="text-center"&gt;Error retrieving weather data.&lt;/div&gt;');
+  });
+}
+
+// Trigger geolocation on page load
+getWeatherByGeolocation();
+&lt;/script&gt;</code></pre>
+
+    <p>The JavaScript code is divided into functions that handle different aspects of the app's functionality. The <code>fetchWeatherData</code> function retrieves weather data from the API based on the user's input or geolocation. The API key is used to authenticate and authorize the requests.</p>
+
+    <p>The form submission is handled by the event listener on the <code>weather-form</code> element. When the form is submitted, the <code>fetchWeatherData</code> function is called with the location input value.</p>
+
+    <p>The <code>getWeatherByGeolocation</code> function checks if the browser supports geolocation. If supported, it retrieves the user's current position and uses the latitude and longitude to fetch weather data specific to that location. If geolocation is not available or the user denies permission, the function falls back to IP geolocation through the <code>getWeatherByIPGeolocation</code> function.</p>
+
+    <p>The code provides error handling in case the API requests fail, displaying appropriate error messages in the UI.</p>
+
+    <p>The Geo Weather App is a testament to the power of JavaScript in building interactive and data-driven web applications. By combining JavaScript, APIs, and thoughtful design, this app offers users a convenient way to access weather information from anywhere in the world.</p>
+  </article>
+</div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+    // Function to fetch weather data and update the UI
+    function fetchWeatherData(location) {
+      var apiKey = 'd442778ce1424682ba2115519233005';
+      var apiUrl = 'https://api.weatherapi.com/v1/current.json?key=' + apiKey + '&q=' + location;
+
+      $.get(apiUrl, function(data) {
+        var weatherDetails = `
+          <h3 class="text-center">${data.location.name}, ${data.location.country}</h3>
+          <div class="text-center weather-icon">
+            <img src="${data.current.condition.icon}" alt="${data.current.condition.text}">
+          </div>
+          <div class="text-center">${data.current.condition.text}</div>
+          <div class="text-center">${data.current.temp_c} &#8451;</div>
+          <div class="text-center">Humidity: ${data.current.humidity}%</div>
+          <div class="text-center">Wind: ${data.current.wind_kph} km/h</div>
+        `;
+        $('#weather-details').html(weatherDetails);
+      }).fail(function() {
+        $('#weather-details').html('<div class="text-center">Error retrieving weather data.</div>');
+      });
+    }
+
+    // Handle form submission
+    $('#weather-form').submit(function(event) {
+      event.preventDefault();
+      var location = $('#location-input').val();
+      fetchWeatherData(location);
+    });
+
+    // Get geolocation and display weather
+    function getWeatherByGeolocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            var apiUrl = `https://api.weatherapi.com/v1/current.json?key=d442778ce1424682ba2115519233005&q=${latitude},${longitude}`;
+
+            $.get(apiUrl, function(data) {
+              var currentLocation = `${data.location.name}, ${data.location.country}`;
+              $('#location-input').val(currentLocation);
+              fetchWeatherData(currentLocation);
+            }).fail(function() {
+              $('#weather-details').html('<div class="text-center">Error retrieving weather data.</div>');
+            });
+          },
+          function(error) {
+            // Fallback to IP geolocation if browser geolocation is not available or user denies permission
+            if (error.code === error.PERMISSION_DENIED) {
+              getWeatherByIPGeolocation();
+            }
+          }
+        );
+      } else {
+        // Fallback to IP geolocation if browser geolocation is not supported
+        getWeatherByIPGeolocation();
+      }
+    }
+
+    // Get weather by IP geolocation
+    function getWeatherByIPGeolocation() {
+      var ipApiUrl = 'https://ipapi.co/json/';
+
+      $.get(ipApiUrl, function(data) {
+        var location = data.city + ', ' + data.country_name;
+        $('#location-input').val(location);
+        fetchWeatherData(location);
+      }).fail(function() {
+        $('#weather-details').html('<div class="text-center">Error retrieving weather data.</div>');
+      });
+    }
+
+    // Trigger geolocation on page load
+    getWeatherByGeolocation();
+  </script>
+</body>
+</html>
