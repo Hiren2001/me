@@ -1,6 +1,6 @@
 # Hiren Weather App
 Hiren Weather App: A JavaScript-powered weather tool that provides real-time weather information based on user input or geolocation. Built with Bootstrap and WeatherAPI integration.
-Sure! Here's an example README file for the Geo Weather App:
+
 
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Hiren2001_geo&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Hiren2001_geo)
 
