@@ -1,149 +1,138 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
-
-  <title>Weather App</title>
-
+  <title>Geo Weather API Code Generator</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
 </head>
-
 <body>
-
   <div class="container">
+    <h1>Geo Weather API Code Generator</h1>
+    <h1>About Weather API Code Generator</h1>
 
-    <h1>Weather App</h1>
+  <p>
 
-    <form action="/" method="post">
+    The Weather API Code Generator is a JavaScript tool that allows you to easily retrieve weather data using the WeatherAPI service. With this tool, you can generate the necessary JavaScript code snippet to fetch weather information for a specific city using your WeatherAPI API key.
 
-      <div class="form-group">
+  </p>
 
-        <label for="apiKey">API Key</label>
+  <p>
 
-        <input type="text" class="form-control" id="apiKey" placeholder="Enter your API key">
+    Simply enter your API key and the city name, and click the "Get Weather" button to retrieve the current temperature and weather condition. The tool will display the weather information on the page and generate a code snippet that you can copy and use in your JavaScript projects.
 
-      </div>
+  </p>
 
-      <div class="form-group">
+  <p>
 
-        <label for="city">City</label>
+    This tool is designed to simplify the process of integrating weather data into your applications. It provides a user-friendly interface, generates the required code, and allows you to easily copy it to your clipboard. Feel free to customize and enhance the tool as per your requirements.
 
-        <input type="text" class="form-control" id="city" placeholder="Enter city name">
+  </p>
 
-      </div>
+  <p>
 
-      <button type="submit" class="btn btn-primary">Generate Snippet</button>
+    Please note that this tool is for educational and demonstration purposes only. Make sure to replace 'YOUR_API_KEY' with your actual WeatherAPI API key and 'CITY_NAME' with the desired city name before using the generated code in your projects.
 
-    </form>
-
-    <div id="snippetCode" class="mt-4"></div>
-
+  </p>
+    <div class="form-group">
+      <label for="apiKey">API Key</label>
+      <input type="text" class="form-control" id="apiKey" placeholder="Enter your API key">
+    </div>
+    <div class="form-group">
+      <label for="city">City</label>
+      <input type="text" class="form-control" id="city" placeholder="Enter city name">
+    </div>
+    <button type="button" class="btn btn-primary" onclick="getWeather()">Get Weather</button>
     <div id="output"></div>
-
+    <div class="form-group">
+      <label for="snippetCode">Snippet Code</label>
+      <textarea class="form-control" id="snippetCode" rows="10" readonly></textarea>
+    </div>
+    <button id="copyButton" type="button" class="btn btn-primary">Copy Code</button>
+    <br><br>
+    <h2>User Guide</h2>
+    <ol>
+      <li>Enter your WeatherAPI API Key in the "API Key" field.</li>
+      <li>Enter the city name for which you want to retrieve weather information in the "City" field.</li>
+      <li>Click on the "Get Weather" button to fetch and display the weather data.</li>
+      <li>The weather information will be displayed below in the "Output" section.</li>
+      <li>The generated JavaScript code snippet will be available in the "Snippet Code" textarea.</li>
+      <li>Click on the "Copy Code" button to copy the code snippet to your clipboard.</li>
+      <li>Paste the code snippet in your JavaScript project to use the WeatherAPI functionality.</li>
+    </ol>
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
   <script>
-
-    function generateSnippet() {
-
+    function getWeather() {
       // Get the API key and city from the form.
-
       var apiKey = document.getElementById('apiKey').value;
-
       var city = document.getElementById('city').value;
 
       // Create the URL for the weather API.
-
-      var url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+      var url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`;
 
       // Make the request to the weather API.
-
-      $.ajax({
-
-        url: url,
-
-        type: "GET",
-
-        success: function(response) {
-
-          // The request was successful, so parse the response data.
-
-          var weatherData = response.data;
-
+      fetch(url)
+        .then(response => response.json())
+        .then(weatherData => {
           // Create the HTML for the weather app.
-
           var html = `
-
             <h4>Current Weather in ${city}</h4>
-
-            <p>Temperature: ${weatherData.main.temp}°C</p>
-
-            <p>Condition: ${weatherData.weather[0].description}</p>
-
+            <p>Temperature: ${weatherData.current.temp_c}°C</p>
+            <p>Condition: ${weatherData.current.condition.text}</p>
           `;
 
-          // Display the weather app in the page.
+          // Display the weather app on the page.
+          document.getElementById('output').innerHTML = html;
 
-          document.getElementById('snippetCode').innerHTML = html;
+          // Create the snippet code.
+          var snippetCode = `function getWeather(apiKey, city) {
+            var url = 'https://api.weatherapi.com/v1/current.json?key=' + apiKey + '&q=' + city;
+            return fetch(url)
+              .then(response => response.json())
+              .then(weatherData => ({
+                temperature: weatherData.current.temp_c,
+                condition: weatherData.current.condition.text
+              }));
+          }
 
-          // Set the output text.
+         // Example usage
+          var apiKey = 'YOUR_API_KEY';
+          var city = 'CITY_NAME';
+          
+          getWeather(apiKey, city)
+            .then(data => {
+              console.log('Temperature:', data.temperature);
+              console.log('Condition:', data.condition);
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });`;
 
-          document.getElementById('output').innerHTML = weatherData;
-
-        },
-
-        error: function(error) {
-
-          // The request failed, so display an error message.
-
-          document.getElementById('snippetCode').innerHTML = `
-
-            <p>Error: ${error.status}</p>
-
-          `;
-
-        }
-
-      });
-
+          // Set the snippet code in the snippet box.
+          document.getElementById('snippetCode').value = snippetCode;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
     }
 
     // Click handler for the copy button.
-
     $('#copyButton').on('click', function() {
-
       // Get the code from the snippet box.
+      var code = document.getElementById('snippetCode').value;
 
-      var code = document.getElementById('snippetCode').innerHTML;
-
-      // Copy the code to the clipboard.
-
+      // Create a temporary textarea element to copy the code.
       var dummy = document.createElement('textarea');
-
-      dummy.textContent = code;
-
+      dummy.value = code;
       document.body.appendChild(dummy);
-
       dummy.select();
-
       document.execCommand('copy');
-
       document.body.removeChild(dummy);
 
       // Display a success message.
-
       alert('Code copied to clipboard!');
-
     });
-
   </script>
-
 </body>
-
 </html>
