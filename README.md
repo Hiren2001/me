@@ -1,12 +1,12 @@
-# geo
-Geo Weather App: A JavaScript-powered weather tool that provides real-time weather information based on user input or geolocation. Built with Bootstrap and WeatherAPI integration.
+# Hiren Weather App
+Hiren Weather App: A JavaScript-powered weather tool that provides real-time weather information based on user input or geolocation. Built with Bootstrap and WeatherAPI integration.
 Sure! Here's an example README file for the Geo Weather App:
 
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Hiren2001_geo&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Hiren2001_geo)
 
-# Geo Weather App
+# Hiren Weather App
 
-The Geo Weather App is a JavaScript-powered weather tool that provides users with real-time weather information for any location around the world. This web application offers a seamless and user-friendly experience on both mobile and desktop devices. By leveraging weather data from the WeatherAPI service, users can easily access accurate and up-to-date weather information.
+The Hiren Weather App is a JavaScript-powered weather tool that provides users with real-time weather information for any location around the world. This web application offers a seamless and user-friendly experience on both mobile and desktop devices. By leveraging weather data from the WeatherAPI service, users can easily access accurate and up-to-date weather information.
 
 ## Features
 
@@ -18,11 +18,11 @@ The Geo Weather App is a JavaScript-powered weather tool that provides users wit
 
 ## API Integration
 
-The Geo Weather App integrates with the WeatherAPI service to retrieve weather data. WeatherAPI provides a reliable and comprehensive collection of weather data, including temperature, humidity, wind speed, and condition descriptions. The app securely communicates with the WeatherAPI service using an API key, ensuring the privacy and security of user data.
+The Hiren Weather App integrates with the WeatherAPI service to retrieve weather data. WeatherAPI provides a reliable and comprehensive collection of weather data, including temperature, humidity, wind speed, and condition descriptions. The app securely communicates with the WeatherAPI service using an API key, ensuring the privacy and security of user data.
 
 ## Code Breakdown
 
-Here are some key functions from the JavaScript code that powers the Geo Weather App:
+Here are some key functions from the JavaScript code that powers the Hiren Weather App:
 
 ```javascript
 
@@ -106,9 +106,9 @@ getWeatherByGeolocation();
 
 ## Getting Started
 
-To get started with the Geo Weather App, follow these steps:
+To get started with the Hiren Weather App, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/Hiren2001/geo.git`
+1. Clone the repository: `git clone https://github.com/Hiren2001/me.git`
 
 2. Open `index.html` in a web browser.
 
@@ -120,7 +120,7 @@ Make sure to replace `YOUR_API_KEY` with your actual WeatherAPI key in the JavaS
 
 ## Dependencies
 
-The following dependencies are used in the Geo Weather App:
+The following dependencies are used in the Hiren Weather App:
 
 - Bootstrap v4.0.0: [https://getbootstrap.com/](https://getbootstrap.com/)
 
