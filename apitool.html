@@ -1,64 +1,149 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
-  <title>Weather App Snippet Generator</title>
+
+  <title>Weather App</title>
+
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
 </head>
+
 <body>
-  <div class="container mt-5">
-    <h3>JavaScript API Generator Tool</h3>
-    <p>This tool allows you to generate a JavaScript snippet for a weather app that you can embed on your website. Simply provide the necessary details, and the tool will generate the code for you.</p>
-    <div class="form-group">
-      <label for="apiKey">API Key:</label>
-      <input type="text" class="form-control" id="apiKey" placeholder="Enter your API key">
-    </div>
-    <div class="form-group">
-      <label for="city">City:</label>
-      <input type="text" class="form-control" id="city" placeholder="Enter city name">
-    </div>
-    <div class="form-group">
-      <label for="containerId">Container ID:</label>
-      <input type="text" class="form-control" id="containerId" placeholder="Enter container ID">
-    </div>
-    <button class="btn btn-primary" onclick="generateSnippet()">Generate Snippet</button>
+
+  <div class="container">
+
+    <h1>Weather App</h1>
+
+    <form action="/" method="post">
+
+      <div class="form-group">
+
+        <label for="apiKey">API Key</label>
+
+        <input type="text" class="form-control" id="apiKey" placeholder="Enter your API key">
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="city">City</label>
+
+        <input type="text" class="form-control" id="city" placeholder="Enter city name">
+
+      </div>
+
+      <button type="submit" class="btn btn-primary">Generate Snippet</button>
+
+    </form>
+
     <div id="snippetCode" class="mt-4"></div>
+
+    <div id="output"></div>
+
   </div>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
   <script>
+
     function generateSnippet() {
+
+      // Get the API key and city from the form.
+
       var apiKey = document.getElementById('apiKey').value;
+
       var city = document.getElementById('city').value;
-      var containerId = document.getElementById('containerId').value;
 
-      var snippetCode = `<script>
-  (function () {
-    var container = document.getElementById('${containerId}');
-    var apiKey = '${apiKey}';
-    var city = '${city}';
-    var url = "https://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=" + city;
-    fetch(url)
-      .then(function(response) {
-        if (!response.ok) {
-          throw new Error('Network response was not OK');
+      // Create the URL for the weather API.
+
+      var url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+
+      // Make the request to the weather API.
+
+      $.ajax({
+
+        url: url,
+
+        type: "GET",
+
+        success: function(response) {
+
+          // The request was successful, so parse the response data.
+
+          var weatherData = response.data;
+
+          // Create the HTML for the weather app.
+
+          var html = `
+
+            <h4>Current Weather in ${city}</h4>
+
+            <p>Temperature: ${weatherData.main.temp}°C</p>
+
+            <p>Condition: ${weatherData.weather[0].description}</p>
+
+          `;
+
+          // Display the weather app in the page.
+
+          document.getElementById('snippetCode').innerHTML = html;
+
+          // Set the output text.
+
+          document.getElementById('output').innerHTML = weatherData;
+
+        },
+
+        error: function(error) {
+
+          // The request failed, so display an error message.
+
+          document.getElementById('snippetCode').innerHTML = `
+
+            <p>Error: ${error.status}</p>
+
+          `;
+
         }
-        return response.json();
-      })
-      .then(function(data) {
-        var weatherData = data.current;
-        var html = "<h4>Current Weather in " + city + "</h4>";
-        html += "<p>Temperature: " + weatherData.temp_c + "°C</p>";
-        html += "<p>Condition: " + weatherData.condition.text + "</p>";
-        container.innerHTML = html;
-      })
-      .catch(function(error) {
-        console.error('Error:', error);
-        container.innerHTML = "<p>Error retrieving weather data. Please try again later.</p>";
-      });
-  })();
-</script>`;
 
-      document.getElementById('snippetCode').innerHTML = `<pre>${snippetCode}</pre>`;
+      });
+
     }
+
+    // Click handler for the copy button.
+
+    $('#copyButton').on('click', function() {
+
+      // Get the code from the snippet box.
+
+      var code = document.getElementById('snippetCode').innerHTML;
+
+      // Copy the code to the clipboard.
+
+      var dummy = document.createElement('textarea');
+
+      dummy.textContent = code;
+
+      document.body.appendChild(dummy);
+
+      dummy.select();
+
+      document.execCommand('copy');
+
+      document.body.removeChild(dummy);
+
+      // Display a success message.
+
+      alert('Code copied to clipboard!');
+
+    });
+
   </script>
+
 </body>
+
 </html>
